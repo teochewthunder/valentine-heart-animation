@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hearts</title>
+
+		<style>
+			body
+			{
+				background-color: #000000;
+			}
+
+			#placeholder
+			{
+				margin: 10% auto 0 auto;
+				outline: 0px solid #FFFFFF;
+			}
+
+			#placeholder div
+			{
+				text-align: center;
+				float: left;
+				outline: 0px solid #FF4400;
+			}
+		</style>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+		<script>
+			var objAnimation = 
+			{
+				generateRandomNo: function(min, max)
+				{
+					return Math.floor((Math.random() * (max - min + 1)) + min);
+				},
+				content: "&hearts;",
+				color: "rgba(255, 0, 0, 1)",
+				fontSize: "30px",
+				unitSize: 30,
+				shape: 
+				[
+					[0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+					[0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+					[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+					[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+					[0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+					[0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+					[0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
+					[0, 0, 0, 0, 1, 1, 0, 0, 0, 0]
+				],
+				render: function() 
+				{
+					var ph = $("#placeholder");
+					var shape = this.shape;
+					var content = this.content;
+					var color = this.color;
+					var fontSize = this.fontSize;
+					var unitSize = this.unitSize;
+
+					ph.attr
+					(
+						"style", "width:" + (unitSize * shape.length) + "px;"
+						+ "height:" + (unitSize * shape.length) + "px;"
+					);
+
+					$(shape).each
+					(
+						function (index)
+						{
+							var shapeRow = shape[index];
+
+							$(shapeRow).each
+							(
+								function (indexRow)
+								{
+									var piece = $("<div></div>");
+									piece.addClass("row" + index);
+									piece.addClass("col" + indexRow);
+									piece.attr
+									(
+										"style", "color:" + color + ";" 
+										+ "font-size:" + fontSize + ";"
+										+ "width:" + unitSize + "px;"
+										+ "height:" + unitSize + "px;"
+									);
+
+									if (shapeRow[indexRow] == 1)
+									{
+										piece.html(content);
+									}
+
+									ph.append(piece);
+								}
+							);
+						}
+					);
+
+					var anim = this;
+
+					setInterval
+					(
+						function()
+						{
+							//anim.animateObject(anim.generateRandomNo(0, 3));
+							anim.animateObject(3);
+						},
+						2500
+					);
+				},
+				animateObject: function (animateId)
+				{
+					var shape = this.shape;
+					var color = this.color;
+					var fontSize = this.fontSize;
+					var changeSize = this.animateSize;
+					var changeColor = this.animateColor;
+					var genRan = this.generateRandomNo;
+
+					if (animateId == 0)
+					{
+						var colorToChange = 
+						"rgba(" + 
+						genRan(250, 255)
+						+ "," +  
+						genRan(50, 200)
+						+ "," +  
+						genRan(50, 200)
+						+ ", 1)";
+
+						$(shape).each
+						(
+							function (index)
+							{
+								setTimeout
+								(
+									function()
+									{
+										changeColor(".row" + index, 200, colorToChange);
+									},
+									index * 100
+								)
+							}
+						);
+
+						$(shape).each
+						(
+							function (index)
+							{
+								setTimeout
+								(
+									function()
+									{
+										changeColor(".row" + index, 1000, color);
+									},
+									index * 200
+								)
+							}
+						);
+					}
+
+					if (animateId == 1)
+					{
+						var colorToChange = 
+						"rgba(" + 
+						genRan(250, 255)
+						+ "," +  
+						genRan(50, 200)
+						+ "," +  
+						genRan(50, 200)
+						+ ", 1)";
+
+						$(shape[0]).each
+						(
+							function (indexCol)
+							{
+								setTimeout
+								(
+									function()
+									{
+										changeColor(".col" + indexCol, 200, colorToChange);
+									},
+									indexCol * 100
+								)
+							}
+						);
+
+						$(shape[0]).each
+						(
+							function (indexCol)
+							{
+								setTimeout
+								(
+									function()
+									{
+										changeColor(".col" + indexCol, 1000, color);
+									},
+									indexCol * 200
+								)
+							}
+						);
+					}
+
+					if (animateId == 2)
+					{
+						var sizeToChange = genRan(10, 25) + "px";
+
+						$(shape[0]).each
+						(
+							function (indexCol)
+							{
+								setTimeout
+								(
+									function()
+									{
+										changeSize(".col" + indexCol, 500, sizeToChange);
+									},
+									indexCol * 100
+								)
+							}
+						);
+
+						$(shape[0]).each
+						(
+							function (indexCol)
+							{
+								setTimeout
+								(
+									function()
+									{
+										changeSize(".col" + indexCol, 500, fontSize);
+									},
+									indexCol * 200
+								)
+							}
+						);
+					}
+
+					if (animateId == 3)
+					{
+						$(shape).each
+						(
+							function (index)
+							{
+								$(shape[index]).each
+								(
+									function (indexCol)
+									{
+										setTimeout
+										(
+											function()
+											{
+												var colorToChange = 
+												"rgba(" + 
+												genRan(250, 255)
+												+ "," +  
+												genRan(50, 200)
+												+ "," +  
+												genRan(50, 200)
+												+ ", 1)";
+
+												var sizeToChange = genRan(10, 65) + "px";
+
+												changeSize(".row" + index + ".col" + indexCol, 500, sizeToChange);
+												changeColor(".row" + index + ".col" + indexCol, 300, colorToChange);
+											},
+											0
+										)
+									}
+								);
+							}
+						);
+
+						$(shape).each
+						(
+							function (index)
+							{
+								$(shape[index]).each
+								(
+									function (indexCol)
+									{
+										setTimeout
+										(
+											function()
+											{
+												changeSize(".row" + index + ".col" + indexCol, 500, fontSize);
+												changeColor(".row" + index + ".col" + indexCol, 300, color);
+											},
+											100
+										)
+									}
+								);
+							}
+						);
+					}
+				},
+				animateColor: function(obj, delay, color)
+				{
+					$(obj).animate
+					(
+						{
+							color: color
+						},
+						delay
+					);
+				},
+				animateSize: function(obj, delay, size)
+				{
+					$(obj).animate
+					(
+						{
+							fontSize: size
+						},
+						delay
+					);
+				}
+			};
+
+			$(document).ready
+			(
+				function() 
+				{
+					objAnimation.render();
+				}
+			);
+		</script>
+	</head>
+
+	<body>
+		<div id="placeholder"></div>
+	</body>
+</html>
