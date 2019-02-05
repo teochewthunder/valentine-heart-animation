@@ -7,7 +7,7 @@ For this, a HTML file with a div (id *placeholder*) and script links to jQuery a
 *Placeholder* and divs within paceholder will not have *height* and *width* pre-defined.
 
 ### JavaScript
-An object, objAnimation is created. This will store properties such as sizes, colors and content.
+An object, *objAnimation* is created. This will store properties such as sizes, colors and content.
 - *shape* is a two-dimensional array that holds defines the grid.
 - *render()* is a method which draws the grid on screen.
 - *generateRandomNo()* is a method that generates a number between *min* and *max*.
